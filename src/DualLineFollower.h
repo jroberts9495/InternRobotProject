@@ -8,7 +8,7 @@
 class DualLineFollower
 {
     public:
-        DualLineFollower(int left_sensor_pin, int right_sensor_pin, int sensor_distance_mm);
+        DualLineFollower(int left_sensor_pin, int right_sensor_pin, double sensor_distance_mm);
         void run();
         void run(int curr_time);
         // bool onLine(); 
@@ -19,7 +19,7 @@ class DualLineFollower
     private:
         MeSingleLineFollower _left_sensor;
         MeSingleLineFollower _right_sensor;
-        const int SENSOR_DISTANCE_MM;
+        const double SENSOR_DISTANCE_MM;
         const int READ_FREQUENCY_MS;
         int _prev_read_time;
 };

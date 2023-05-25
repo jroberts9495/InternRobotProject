@@ -3,11 +3,11 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <SoftwareSerial.h>
-#include "src/MeSingleLineFollower.h"
 #include "src/MeCollisionSensor.h"
 #include "src/MeBarrierSensor.h"
 #include "src/MeNewRGBLed.h"
 #include "src/MotorArray.h"
+#include "src/DualLineFollower.h"
 #include <MeMegaPi.h>
 
 
@@ -39,8 +39,7 @@ int timeof_last_motor_action(0);
 MeBarrierSensor barrier_right(A7);
 MeBarrierSensor barrier_mid(A8);
 MeBarrierSensor barrier_left(A6);
-MeSingleLineFollower line_left(A9);
-MeSingleLineFollower line_right(A10);
+DualLineFollower line_tracker(A9, A10, 4.5);
 MeCollisionSensor collide_left(A11);
 MeCollisionSensor collide_right(A12);
 MeNewRGBLed rgb_left(A13);

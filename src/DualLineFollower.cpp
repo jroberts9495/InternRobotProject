@@ -1,6 +1,6 @@
 #include "DualLineFollower.h"
 
-DualLineFollower::DualLineFollower(int left_sensor_pin, int right_sensor_pin, int sensor_distance_mm):
+DualLineFollower::DualLineFollower(int left_sensor_pin, int right_sensor_pin, double sensor_distance_mm):
     _left_sensor(left_sensor_pin),
     _right_sensor(right_sensor_pin),
     SENSOR_DISTANCE_MM(sensor_distance_mm),
