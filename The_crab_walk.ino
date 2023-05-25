@@ -20,6 +20,8 @@ const int WHEEL_DEPTH(30);
 const int MAX_ACCELERATION_NO_SLIP_255_MS_MS(2.5);
 const int MOTOR_SPEED(255);
 
+const double LINE_TRACKER_WIDTH(4.5);
+
 // LOCAL CLASSES
 enum MotorState
 {
@@ -39,7 +41,7 @@ int timeof_last_motor_action(0);
 MeBarrierSensor barrier_right(A7);
 MeBarrierSensor barrier_mid(A8);
 MeBarrierSensor barrier_left(A6);
-DualLineFollower line_tracker(A9, A10, 4.5);
+DualLineFollower line_tracker(A9, A10, LINE_TRACKER_WIDTH);
 MeCollisionSensor collide_left(A11);
 MeCollisionSensor collide_right(A12);
 MeNewRGBLed rgb_left(A13);
