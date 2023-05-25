@@ -72,6 +72,7 @@ void setup() {
 
 void loop() {
   int loop_time = millis();
+
   switch (ms)
   {
     case STOPPED:
@@ -95,7 +96,7 @@ void loop() {
             rgb_right.setColor(0, 55, 0);
             rgb_left.show();
             rgb_right.show();
-            timeof_last_motor_action = millis();
+            timeof_last_motor_action = loop_time;
         }
         break;
     case RIGHT:
@@ -107,7 +108,7 @@ void loop() {
             rgb_right.setColor(0, 55, 55);
             rgb_left.show();
             rgb_right.show();
-            timeof_last_motor_action = millis();
+            timeof_last_motor_action = loop_time;
         }
         break;
     case FORWARD:
@@ -119,7 +120,7 @@ void loop() {
             rgb_right.setColor(0, 0, 55);
             rgb_left.show();
             rgb_right.show();
-            timeof_last_motor_action = millis();
+            timeof_last_motor_action = loop_time;
         }
         break;
     case BACKWARD:
@@ -131,7 +132,7 @@ void loop() {
             rgb_right.setColor(55, 0, 55);
             rgb_left.show();
             rgb_right.show();
-            timeof_last_motor_action = millis();
+            timeof_last_motor_action = loop_time;
         }
         break;
     case SPIN:
@@ -143,9 +144,11 @@ void loop() {
             rgb_right.setColor(55, 0, 0);
             rgb_left.show();
             rgb_right.show();
-            timeof_last_motor_action = millis();
+            timeof_last_motor_action = loop_time;
         }
         break;
   }
-  motorArray.run();
+
+  motorArray.run(loop_time);
+  line_tracker.run(loop_time);
 }
