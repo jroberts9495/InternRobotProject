@@ -17,6 +17,7 @@ class MotorArray
         uint8_t stop();
 
         void run();
+        void run(int curr_time);
 
     private:
         const uint16_t _natural_radius;

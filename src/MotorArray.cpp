@@ -23,13 +23,18 @@ MotorArray::MotorArray(uint16_t wheel_width_mm, uint16_t wheel_depth_mm, double 
     _fr_motor(10),
     _bl_motor(9),
     _br_motor(2),
-    _prev_accel_time(millis())
+    _prev_accel_time(0)
 {
 }
 
 void MotorArray::run()
 {
-    if (millis() - _prev_accel_time >= ACCELERATION_FREQUENCY)
+    run(millis());
+}
+
+void MotorArray::run(int curr_time)
+{
+    if (curr_time - _prev_accel_time >= ACCELERATION_FREQUENCY)
     {
         if (_curr_fl_speed != _desired_fl_speed)
         {
@@ -87,10 +92,9 @@ void MotorArray::run()
                 _br_motor.run(_curr_br_speed);
             }
         }
-        _prev_accel_time = millis();
+        _prev_accel_time = curr_time;
     }
 }
-
 
 uint8_t MotorArray::spin(bool clkwise)
 {
