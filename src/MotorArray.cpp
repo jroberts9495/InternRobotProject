@@ -38,21 +38,11 @@ void MotorArray::run()
                 _curr_fl_speed = _desired_fl_speed;
                 _fl_accel_255msms = 0;
                 _fl_motor.run(_curr_fl_speed);
-                // Serial.print("Motor fl met speed ");
-                // Serial.print(_curr_fl_speed);
-                // Serial.print("\n");
             }
             else 
             {
                 _curr_fl_speed += _fl_accel_255msms * ACCELERATION_FREQUENCY;
                 _fl_motor.run(_curr_fl_speed);
-                // Serial.print("Motor fl at speed ");
-                // Serial.print(_curr_fl_speed);
-                // Serial.print(" ");
-                // Serial.print(_desired_fl_speed);
-                // Serial.print(" ");
-                // Serial.print(abs(_desired_fl_speed - _curr_fl_speed - (_fl_accel_255msms * ACCELERATION_FREQUENCY)));
-                // Serial.print("\n");
             }
         }
         if (_curr_fr_speed != _desired_fr_speed)
@@ -62,9 +52,6 @@ void MotorArray::run()
                 _curr_fr_speed = _desired_fr_speed;
                 _fr_accel_255msms = 0;
                 _fr_motor.run(_curr_fr_speed);
-                // Serial.print("Motor fr met speed ");
-                // Serial.print(_curr_fr_speed);
-                // Serial.print("\n");
             }
             else 
             {
@@ -79,9 +66,6 @@ void MotorArray::run()
                 _curr_bl_speed = _desired_bl_speed;
                 _bl_accel_255msms = 0;
                 _bl_motor.run(_curr_bl_speed);
-                // Serial.print("Motor bl met speed ");
-                // Serial.print(_curr_bl_speed);
-                // Serial.print("\n");
             }
             else 
             {
@@ -96,9 +80,6 @@ void MotorArray::run()
                 _curr_br_speed = _desired_br_speed;
                 _br_accel_255msms = 0;
                 _br_motor.run(_curr_br_speed);
-                // Serial.print("Motor br met speed ");
-                // Serial.print(_curr_br_speed);
-                // Serial.print("\n");
             }
             else 
             {

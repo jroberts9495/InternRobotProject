@@ -59,10 +59,6 @@ void loop() {
     case STOPPED:
         if (collide_left.isCollision() || collide_right.isCollision())
         {
-            // Serial.print("Time diff = ");
-            // Serial.print(loop_time - prev_motor_action);
-            // Serial.print("\n");
-            // Serial.print("Entering LEFT State\n");
             ms = LEFT;
             motorArray.crawl(SPEED, 0);
             rgb_left.setColor(55, 55, 0);
@@ -75,10 +71,6 @@ void loop() {
     case LEFT:
         if (loop_time - prev_motor_action >= MOTOR_ACTION_FREQUENCY)
         {
-            // Serial.print("Time diff = ");
-            // Serial.print(loop_time - prev_motor_action);
-            // Serial.print("\n");
-            // Serial.print("Entering RIGHT State\n");
             ms = RIGHT;
             motorArray.crawl(-SPEED, 0);
             rgb_left.setColor(0, 55, 0);
@@ -91,10 +83,6 @@ void loop() {
     case RIGHT:
         if (loop_time - prev_motor_action >= MOTOR_ACTION_FREQUENCY)
         {
-            // Serial.print("Time diff = ");
-            // Serial.print(loop_time - prev_motor_action);
-            // Serial.print("\n");
-            // Serial.print("Entering FORWARD State\n");
             ms = FORWARD;
             motorArray.crawl(SPEED);
             rgb_left.setColor(0, 55, 55);
@@ -107,10 +95,6 @@ void loop() {
     case FORWARD:
         if (loop_time - prev_motor_action >= MOTOR_ACTION_FREQUENCY)
         {
-            // Serial.print("Time diff = ");
-            // Serial.print(loop_time - prev_motor_action);
-            // Serial.print("\n");
-            // Serial.print("Entering BACKWARD State\n");
             ms = BACKWARD;
             motorArray.crawl(-SPEED);
             rgb_left.setColor(0, 0, 55);
@@ -123,10 +107,6 @@ void loop() {
     case BACKWARD:
         if (loop_time - prev_motor_action >= MOTOR_ACTION_FREQUENCY)
         {
-            // Serial.print("Time diff = ");
-            // Serial.print(loop_time - prev_motor_action);
-            // Serial.print("\n");
-            // Serial.print("Entering STOPPED State\n");
             ms = STOPPED;
             motorArray.stop();
             rgb_left.setColor(55, 0, 0);
