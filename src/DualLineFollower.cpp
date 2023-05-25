@@ -9,16 +9,16 @@ DualLineFollower::DualLineFollower(int left_sensor_pin, int right_sensor_pin, in
 {
 }
 
-DualLineFollower::run()
+void DualLineFollower::run()
 {
     run(millis());
 }
 
 
-DualLineFollower::run(int curr_time)
+void DualLineFollower::run(int curr_time)
 {
     if (curr_time - _prev_read_time > READ_FREQUENCY_MS)
     {
-        
+
     }
 }
