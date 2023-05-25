@@ -1,0 +1,7 @@
+    The official license for Makeblock's contributions can be found
+at https://github.com/Makeblock-official/mBlock/blob/master/LICENSE.txt.
+Please follow their guidlines with everything relating to their original
+source code as defined in README.md.
+
+    There are no requirements levied upon the user by the creators of
+this project, though credit is always appreciated. Happy programming!
