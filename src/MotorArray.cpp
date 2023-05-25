@@ -157,6 +157,7 @@ uint8_t MotorArray::stop()
     return crawl(0, 0);
 }
 
+// Returns the number of ms until wheels are at desired speed (NOT rounded to nearest ACCELERATION_FREQUENCY)
 uint8_t MotorArray::calcAccelerations()
 {
     const int16_t max_diff = fmax(
