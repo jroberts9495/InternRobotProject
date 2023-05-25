@@ -45,7 +45,15 @@ MeCollisionSensor collide_left(A11);
 MeCollisionSensor collide_right(A12);
 MeNewRGBLed rgb_left(A13);
 MeNewRGBLed rgb_right(A14);
-MotorArray motorArray(WHEEL_WIDTH, WHEEL_DEPTH, MAX_ACCELERATION_NO_SLIP_255_MS_MS);
+MotorArray motorArray(
+    1,
+    10,
+    9,
+    2,
+    WHEEL_WIDTH,
+    WHEEL_DEPTH,
+    MAX_ACCELERATION_NO_SLIP_255_MS_MS
+);
 } // end namespace //anonymous
 
 void setup() {

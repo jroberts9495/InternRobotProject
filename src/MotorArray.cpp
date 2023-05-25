@@ -1,7 +1,7 @@
 #include "MotorArray.h"
 #include <math.h>
 
-MotorArray::MotorArray(uint16_t wheel_width_mm, uint16_t wheel_depth_mm, double max_accel_255pmsms):
+MotorArray::MotorArray(int fl_pin, int fr_pin, int bl_pin, int br_pin, uint16_t wheel_width_mm, uint16_t wheel_depth_mm, double max_accel_255pmsms):
     _wheel_depth_mm(wheel_depth_mm),
     _wheel_width_mm(wheel_width_mm),
     _natural_radius((_wheel_depth_mm+_wheel_width_mm)/2),
@@ -19,10 +19,10 @@ MotorArray::MotorArray(uint16_t wheel_width_mm, uint16_t wheel_depth_mm, double 
     _fr_accel_255msms(0),
     _bl_accel_255msms(0),
     _br_accel_255msms(0),
-    _fl_motor(1),
-    _fr_motor(10),
-    _bl_motor(9),
-    _br_motor(2),
+    _fl_motor(fl_pin),
+    _fr_motor(fr_pin),
+    _bl_motor(bl_pin),
+    _br_motor(br_pin),
     _prev_accel_time(0)
 {
 }
