@@ -91,16 +91,53 @@ void MotorArray::run()
     }
 }
 
+
 uint8_t MotorArray::spin(bool clkwise)
 {
+    return spin(clkwise, 255);
+}
+
+uint8_t MotorArray::spin(bool clkwise, int16_t vy)
+{
+    _desired_fl_speed = vy * (clkwise ? -1 : 1);
+    _desired_fr_speed = vy * (clkwise ? -1 : 1);
+    _desired_bl_speed = vy * (clkwise ? -1 : 1);
+    _desired_br_speed = vy * (clkwise ? -1 : 1);
+    
+    return calcAccelerations();
 }
 
 uint8_t MotorArray::crawl(int16_t vx, int16_t vy)
 {
-    _desired_fl_speed = -(vy + vx);
-    _desired_fr_speed = vy - vx;
-    _desired_bl_speed = vx - vy;
-    _desired_br_speed = vy + vx;
+    int16_t local_max_speed = fmax(abs(vx) + abs(vy), 255);
+    _desired_fl_speed = map(
+        -(vy + vx),
+        -local_max_speed,
+        local_max_speed,
+        -255,
+        255
+    );
+    _desired_fr_speed = map(
+        vy - vx,
+        -local_max_speed,
+        local_max_speed,
+        -255,
+        255
+    );
+    _desired_bl_speed = map(
+        vx - vy,
+        -local_max_speed,
+        local_max_speed,
+        -255,
+        255
+    );
+    _desired_br_speed = map(
+        vy + vx,
+        -local_max_speed,
+        local_max_speed,
+        -255,
+        255
+    );
     
     return calcAccelerations();
 }

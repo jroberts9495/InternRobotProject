@@ -14,14 +14,30 @@
 #include "src/MotorArray.h"
 #include <MeMegaPi.h>
 
+
+namespace //anonymous
+{
+// LOCAL CONSTANTS
+const int MOTOR_ACTION_FREQUENCY(2000);
+const int WHEEL_WIDTH(20);
+const int WHEEL_DEPTH(30);
+const int MAX_ACCELERATION_NO_SLIP_255_MS_MS(2.5);
+const int MOTOR_SPEED(255);
+
+// LOCAL CLASSES
 enum MotorState
 {
     FORWARD,
     BACKWARD,
     LEFT,
     RIGHT,
+    SPIN,
     STOPPED
 };
+
+// LOCAL VARIABLES
+MotorState ms = STOPPED;
+int timeof_last_motor_action(0);
 
 MeBarrierSensor barrier_right(A7);
 MeBarrierSensor barrier_mid(A8);
@@ -32,13 +48,8 @@ MeCollisionSensor collide_left(A11);
 MeCollisionSensor collide_right(A12);
 MeNewRGBLed rgb_left(A13);
 MeNewRGBLed rgb_right(A14);
-MotorArray motorArray(20, 30, 2.5);
-
-MotorState ms = STOPPED;
-int prev_motor_action(0);
-const int MOTOR_ACTION_FREQUENCY(2000);
-
-const int16_t SPEED = 255;
+MotorArray motorArray(WHEEL_WIDTH, WHEEL_DEPTH, MAX_ACCELERATION_NO_SLIP_255_MS_MS);
+} // end namespace //anonymous
 
 void setup() {
   Serial.begin(9600);
@@ -60,52 +71,64 @@ void loop() {
         if (collide_left.isCollision() || collide_right.isCollision())
         {
             ms = LEFT;
-            motorArray.crawl(SPEED, 0);
+            motorArray.crawl(MOTOR_SPEED, 0);
             rgb_left.setColor(55, 55, 0);
             rgb_right.setColor(55, 55, 0);
             rgb_left.show();
             rgb_right.show();
-            prev_motor_action = loop_time;
+            timeof_last_motor_action = loop_time;
         }
         break;
     case LEFT:
-        if (loop_time - prev_motor_action >= MOTOR_ACTION_FREQUENCY)
+        if (loop_time - timeof_last_motor_action >= MOTOR_ACTION_FREQUENCY)
         {
             ms = RIGHT;
-            motorArray.crawl(-SPEED, 0);
+            motorArray.crawl(-MOTOR_SPEED, 0);
             rgb_left.setColor(0, 55, 0);
             rgb_right.setColor(0, 55, 0);
             rgb_left.show();
             rgb_right.show();
-            prev_motor_action = millis();
+            timeof_last_motor_action = millis();
         }
         break;
     case RIGHT:
-        if (loop_time - prev_motor_action >= MOTOR_ACTION_FREQUENCY)
+        if (loop_time - timeof_last_motor_action >= MOTOR_ACTION_FREQUENCY)
         {
             ms = FORWARD;
-            motorArray.crawl(SPEED);
+            motorArray.crawl(MOTOR_SPEED);
             rgb_left.setColor(0, 55, 55);
             rgb_right.setColor(0, 55, 55);
             rgb_left.show();
             rgb_right.show();
-            prev_motor_action = millis();
+            timeof_last_motor_action = millis();
         }
         break;
     case FORWARD:
-        if (loop_time - prev_motor_action >= MOTOR_ACTION_FREQUENCY)
+        if (loop_time - timeof_last_motor_action >= MOTOR_ACTION_FREQUENCY)
         {
             ms = BACKWARD;
-            motorArray.crawl(-SPEED);
+            motorArray.crawl(-MOTOR_SPEED);
             rgb_left.setColor(0, 0, 55);
             rgb_right.setColor(0, 0, 55);
             rgb_left.show();
             rgb_right.show();
-            prev_motor_action = millis();
+            timeof_last_motor_action = millis();
         }
         break;
     case BACKWARD:
-        if (loop_time - prev_motor_action >= MOTOR_ACTION_FREQUENCY)
+        if (loop_time - timeof_last_motor_action >= MOTOR_ACTION_FREQUENCY)
+        {
+            ms = SPIN;
+            motorArray.spin(true);
+            rgb_left.setColor(55, 0, 55);
+            rgb_right.setColor(55, 0, 55);
+            rgb_left.show();
+            rgb_right.show();
+            timeof_last_motor_action = millis();
+        }
+        break;
+    case SPIN:
+        if (loop_time - timeof_last_motor_action >= MOTOR_ACTION_FREQUENCY)
         {
             ms = STOPPED;
             motorArray.stop();
@@ -113,7 +136,7 @@ void loop() {
             rgb_right.setColor(55, 0, 0);
             rgb_left.show();
             rgb_right.show();
-            prev_motor_action = millis();
+            timeof_last_motor_action = millis();
         }
         break;
   }

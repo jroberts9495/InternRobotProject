@@ -10,6 +10,7 @@ class MotorArray
     public:
         MotorArray(uint16_t wheel_width_mm, uint16_t wheel_depth_mm, double max_accel_255pmsms);
         uint8_t spin(bool clkwise);
+        uint8_t MotorArray::spin(bool clkwise, int16_t vy);
         uint8_t crawl(int16_t vy);
         uint8_t crawl(int16_t vx, int16_t vy);
         uint8_t turn(int16_t vy, uint8_t rad, bool left);
