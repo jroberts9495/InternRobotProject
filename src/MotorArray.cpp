@@ -97,12 +97,6 @@ uint8_t MotorArray::spin(bool clkwise)
 
 uint8_t MotorArray::crawl(int16_t vx, int16_t vy)
 {
-    Serial.print("Received crawl command ");
-    Serial.print(vx);
-    Serial.print(" ");
-    Serial.print(vy);
-    Serial.print("\n");
-
     _desired_fl_speed = -(vy + vx);
     _desired_fr_speed = vy - vx;
     _desired_bl_speed = vx - vy;
