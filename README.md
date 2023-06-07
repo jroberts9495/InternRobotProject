@@ -14,7 +14,7 @@ The following files were written by Makeblock as a part of their Crab Walk examp
  - src/MeSingleLineFollower.cpp
  - src/MeSingleLineFollower.h
 
- These files might be modified from their original source. If they were modified, those modifications were custom-made by the owners of this project.
+ These files might be modified from their original source. If they were modified, those modifications were custom-made by the owners of this project; git blame is a great tool.
 
  # Own Licensure
 
