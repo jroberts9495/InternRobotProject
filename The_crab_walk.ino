@@ -73,6 +73,46 @@ void setup() {
 void loop() {
   int loop_time = millis();
 
+  switch (line_tracker.direction_of_departure())
+  {
+    case ON_LINE:
+        motorArray.crawl(0, MOTOR_SPEED);
+        rgb_left.setColor(0, 55, 0);
+        rgb_right.setColor(0, 55, 0);
+        rgb_left.show();
+        rgb_right.show();
+        break;
+    case ONE_OFF_TOWARDS_LEFT:
+        motorArray.turn(MOTOR_SPEED, 10, false);
+        rgb_left.setColor(55, 55, 0);
+        rgb_right.setColor(55, 55, 0);
+        rgb_left.show();
+        rgb_right.show();
+        break;
+    case BOTH_OFF_TOWARDS_LEFT:
+        motorArray.turn(MOTOR_SPEED, 5, false);
+        rgb_left.setColor(55, 0, 0);
+        rgb_right.setColor(55, 0, 0);
+        rgb_left.show();
+        rgb_right.show();
+        break;
+    case ONE_OFF_TOWARDS_RIGHT:
+        motorArray.turn(MOTOR_SPEED, 10, true);
+        rgb_left.setColor(0, 55, 55);
+        rgb_right.setColor(0, 55, 55);
+        rgb_left.show();
+        rgb_right.show();
+        break;
+    case BOTH_OFF_TOWARDS_RIGHT:
+        motorArray.turn(MOTOR_SPEED, 5, true);
+        rgb_left.setColor(0, 0, 55);
+        rgb_right.setColor(0, 0, 55);
+        rgb_left.show();
+        rgb_right.show();
+        break;
+  }
+
+/* Demo
   switch (ms)
   {
     case STOPPED:
@@ -148,6 +188,7 @@ void loop() {
         }
         break;
   }
+*/
 
   motorArray.run(loop_time);
   line_tracker.run(loop_time);

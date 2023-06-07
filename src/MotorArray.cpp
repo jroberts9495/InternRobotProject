@@ -142,7 +142,7 @@ uint8_t MotorArray::crawl(int16_t vx, int16_t vy)
         -255,
         255
     );
-    
+
     return calcAccelerations();
 }
 
@@ -153,7 +153,42 @@ uint8_t MotorArray::crawl(int16_t vy)
 
 uint8_t MotorArray::turn(int16_t vy, uint8_t rad, bool left)
 {
+    if (rad > 7)
+    {
+        if (!left)
+        {
+            _desired_bl_speed = -vy;
+            _desired_br_speed = 0;
+            _desired_fl_speed = -vy;
+            _desired_fr_speed = 0;
+        }
+        else
+        {
+            _desired_bl_speed = 0;
+            _desired_br_speed = vy;
+            _desired_fl_speed = 0;
+            _desired_fr_speed = vy;
+        }
+    }
+    else
+    {
+        if (!left)
+        {
+            _desired_bl_speed = -vy;
+            _desired_br_speed = -vy/2;
+            _desired_fl_speed = -vy;
+            _desired_fr_speed = -vy/2;
+        }
+        else
+        {
+            _desired_bl_speed = vy/2;
+            _desired_br_speed = vy;
+            _desired_fl_speed = vy/2;
+            _desired_fr_speed = vy;
+        }
+    }
 
+    return calcAccelerations();
 }
 
 uint8_t MotorArray::stop()
