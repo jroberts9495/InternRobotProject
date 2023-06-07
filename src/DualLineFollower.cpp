@@ -7,7 +7,7 @@ DualLineFollower::DualLineFollower(int left_sensor_pin, int right_sensor_pin, do
     READ_FREQUENCY_MS(5),
     _prev_read_time(0),
     _time_since_departure(0),
-    _dir_of_departure(DepartureDirection.ON_LINE),
+    _dir_of_departure(ON_LINE),
     _speed_of_departure(0)
 {
 }
@@ -24,7 +24,7 @@ void DualLineFollower::run(int curr_time)
     {
         if (onLine())
         {
-            _dir_of_departure = DepartureDirection.ON_LINE;
+            _dir_of_departure = ON_LINE;
             _time_since_departure = 0;
             _speed_of_departure = 0;
         }
@@ -33,11 +33,11 @@ void DualLineFollower::run(int curr_time)
             _time_since_departure += READ_FREQUENCY_MS;
             if (_left_sensor.onLine())
             {
-                _dir_of_departure = DepartureDirection.ONE_OFF_TOWARDS_RIGHT;
+                _dir_of_departure = ONE_OFF_TOWARDS_RIGHT;
             }
-            else if (!_right_sensor.onLine() && _dir_of_departure == DepartureDirection.ONE_OFF_TOWARDS_RIGHT)
+            else if (!_right_sensor.onLine() && _dir_of_departure == ONE_OFF_TOWARDS_RIGHT)
             {
-                _dir_of_departure = DepartureDirection.BOTH_OFF_TOWARDS_RIGHT;
+                _dir_of_departure = BOTH_OFF_TOWARDS_RIGHT;
                 if (!_speed_of_departure)
                 {
                     _speed_of_departure = _time_since_departure / SENSOR_DISTANCE_MM;
@@ -45,11 +45,11 @@ void DualLineFollower::run(int curr_time)
             }
             if (_right_sensor.onLine())
             {
-                _dir_of_departure = DepartureDirection.ONE_OFF_TOWARDS_LEFT;
+                _dir_of_departure = ONE_OFF_TOWARDS_LEFT;
             }
-            else if (!_left_sensor.onLine() && _dir_of_departure == DepartureDirection.ONE_OFF_TOWARDS_LEFT)
+            else if (!_left_sensor.onLine() && _dir_of_departure == ONE_OFF_TOWARDS_LEFT)
             {
-                _dir_of_departure = DepartureDirection.BOTH_OFF_TOWARDS_LEFT;
+                _dir_of_departure = BOTH_OFF_TOWARDS_LEFT;
                 if (!_speed_of_departure)
                 {
                     _speed_of_departure = _time_since_departure / SENSOR_DISTANCE_MM;

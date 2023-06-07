@@ -20,7 +20,7 @@ class DualLineFollower
         DualLineFollower(int left_sensor_pin, int right_sensor_pin, double sensor_distance_mm);
         void run();
         void run(int curr_time);
-        bool onLine(); 
+        bool onLine();
         int time_since_departure();
         DepartureDirection direction_of_departure(); // return enum with { ON_LINE=0, ONE_OFF_TOWARDS_RIGHT=1, ONE_OFF_TOWARDS_LEFT=2, BOTH_OFF_TOWARDS_RIGHT=3, BOTH_OFF_TOWARDS_LEFT=4 }
         double speed_of_departure(); // number of ms between left and right sensor departing, divided by the sensor distance
