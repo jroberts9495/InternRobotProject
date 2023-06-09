@@ -162,13 +162,7 @@ uint8_t MotorArray::turn(int16_t vy, const uint8_t &rad, bool left)
     );
     int16_t vy_offside = 0;
     if (rad < _natural_radius) {
-        vy_offside = map(
-            log(_natural_radius - rad),
-            0,
-            log(_natural_radius),
-            0,
-            vy
-        );
+        vy_offside = vy - vy * rad / _natural_radius;
     } else if (rad > _natural_radius) {
         vy_offside = -vy  + (vy * _natural_radius / rad);
     }
