@@ -1,7 +1,7 @@
 #include "MotorArray.h"
 #include <math.h>
 
-MotorArray::MotorArray(int fl_pin, int fr_pin, int bl_pin, int br_pin, uint16_t wheel_width_mm, uint16_t wheel_depth_mm, double max_accel_255pmsms):
+MotorArray::MotorArray(const int &fl_pin, const int &fr_pin, const int &bl_pin, const int &br_pin, const uint16_t &wheel_width_mm, const uint16_t &wheel_depth_mm, const double &max_accel_255pmsms):
     _wheel_depth_mm(wheel_depth_mm),
     _wheel_width_mm(wheel_width_mm),
     _natural_radius((_wheel_depth_mm+_wheel_width_mm)/2),
@@ -32,7 +32,7 @@ void MotorArray::run()
     run(millis());
 }
 
-void MotorArray::run(int curr_time)
+void MotorArray::run(const unsigned long &curr_time)
 {
     if (curr_time - _prev_accel_time >= ACCELERATION_FREQUENCY)
     {
@@ -101,7 +101,7 @@ uint8_t MotorArray::spin(bool clkwise)
     return spin(clkwise, 255);
 }
 
-uint8_t MotorArray::spin(bool clkwise, int16_t vy)
+uint8_t MotorArray::spin(bool clkwise, const int16_t &vy)
 {
     _desired_fl_speed = vy * (clkwise ? -1 : 1);
     _desired_fr_speed = vy * (clkwise ? -1 : 1);
@@ -111,7 +111,7 @@ uint8_t MotorArray::spin(bool clkwise, int16_t vy)
     return calcAccelerations();
 }
 
-uint8_t MotorArray::crawl(int16_t vx, int16_t vy)
+uint8_t MotorArray::crawl(const int16_t &vx, const int16_t &vy)
 {
     int16_t local_max_speed = fmax(abs(vx) + abs(vy), 255);
     _desired_fl_speed = map(
@@ -146,46 +146,51 @@ uint8_t MotorArray::crawl(int16_t vx, int16_t vy)
     return calcAccelerations();
 }
 
-uint8_t MotorArray::crawl(int16_t vy)
+uint8_t MotorArray::crawl(const int16_t &vy)
 {
     return crawl(0, vy);
 }
 
-uint8_t MotorArray::turn(int16_t vy, uint8_t rad, bool left)
+uint8_t MotorArray::turn(int16_t vy, const uint8_t &rad, bool left)
 {
-    if (rad > 7)
+    vy = map(
+        vy,
+        -fmax(abs(vy), 255),
+        fmax(abs(vy), 255),
+        -255,
+        255
+    );
+    int16_t vy_offside = 0;
+    if (rad < _natural_radius) {
+        vy_offside = map(
+            log(_natural_radius - rad),
+            0,
+            log(_natural_radius),
+            0,
+            -vy
+        );
+    } else if (rad > _natural_radius) {
+        map(
+            log(rad - _natural_radius),
+            0,
+            log(32767),
+            0,
+            vy
+        );
+    }
+    if (!left)
     {
-        if (!left)
-        {
-            _desired_bl_speed = -vy;
-            _desired_br_speed = 0;
-            _desired_fl_speed = -vy;
-            _desired_fr_speed = 0;
-        }
-        else
-        {
-            _desired_bl_speed = 0;
-            _desired_br_speed = vy;
-            _desired_fl_speed = 0;
-            _desired_fr_speed = vy;
-        }
+        _desired_bl_speed = -vy;
+        _desired_br_speed = -vy_offside;
+        _desired_fl_speed = -vy;
+        _desired_fr_speed = -vy_offside;
     }
     else
     {
-        if (!left)
-        {
-            _desired_bl_speed = -vy;
-            _desired_br_speed = -vy/2;
-            _desired_fl_speed = -vy;
-            _desired_fr_speed = -vy/2;
-        }
-        else
-        {
-            _desired_bl_speed = vy/2;
-            _desired_br_speed = vy;
-            _desired_fl_speed = vy/2;
-            _desired_fr_speed = vy;
-        }
+        _desired_bl_speed = vy_offside;
+        _desired_br_speed = vy;
+        _desired_fl_speed = vy_offside;
+        _desired_fr_speed = vy;
     }
 
     return calcAccelerations();

@@ -8,23 +8,23 @@
 class MotorArray
 {
     public:
-        MotorArray(int fl_pin, int fr_pin, int bl_pin, int br_pin, uint16_t wheel_width_mm, uint16_t wheel_depth_mm, double max_accel_255pmsms);
+        MotorArray(const int &fl_pin, const int &fr_pin, const int &bl_pin, const int &br_pin, const uint16_t &wheel_width_mm, const uint16_t &wheel_depth_mm, const double &max_accel_255pmsms);
         uint8_t spin(bool clkwise);
-        uint8_t MotorArray::spin(bool clkwise, int16_t vy);
-        uint8_t crawl(int16_t vy);
-        uint8_t crawl(int16_t vx, int16_t vy);
-        uint8_t turn(int16_t vy, uint8_t rad, bool left);
+        uint8_t MotorArray::spin(bool clkwise, const int16_t &vy);
+        uint8_t crawl(const int16_t &vy);
+        uint8_t crawl(const int16_t &vx, const int16_t &vy);
+        uint8_t turn(int16_t vy, const uint8_t &rad, bool left);
         uint8_t stop();
 
         void run();
-        void run(int curr_time);
+        void run(const unsigned long &curr_time);
 
     private:
         const uint16_t _natural_radius;
         const uint16_t _wheel_width_mm;
         const uint16_t _wheel_depth_mm;
         const double _max_accel_255pmsms;
-        const int ACCELERATION_FREQUENCY;
+        const unsigned long ACCELERATION_FREQUENCY;
 
         int16_t _curr_fl_speed;
         int16_t _curr_fr_speed;
@@ -46,7 +46,7 @@ class MotorArray
         MeMegaPiDCMotor _bl_motor;
         MeMegaPiDCMotor _br_motor;
 
-        int _prev_accel_time;
+        unsigned long _prev_accel_time;
 
         uint8_t calcAccelerations();
 };

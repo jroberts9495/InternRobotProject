@@ -1,6 +1,6 @@
 #include "DualLineFollower.h"
 
-DualLineFollower::DualLineFollower(int left_sensor_pin, int right_sensor_pin, double sensor_distance_mm):
+DualLineFollower::DualLineFollower(const int &left_sensor_pin, const int &right_sensor_pin, const double &sensor_distance_mm):
     _left_sensor(left_sensor_pin),
     _right_sensor(right_sensor_pin),
     SENSOR_DISTANCE_MM(sensor_distance_mm),
@@ -18,7 +18,7 @@ void DualLineFollower::run()
 }
 
 
-void DualLineFollower::run(int curr_time)
+void DualLineFollower::run(const unsigned long &curr_time)
 {
     if (curr_time - _prev_read_time > READ_FREQUENCY_MS)
     {
@@ -40,7 +40,7 @@ void DualLineFollower::run(int curr_time)
                 _dir_of_departure = BOTH_OFF_TOWARDS_RIGHT;
                 if (!_speed_of_departure)
                 {
-                    _speed_of_departure = _time_since_departure / SENSOR_DISTANCE_MM;
+                    _speed_of_departure = SENSOR_DISTANCE_MM / _time_since_departure;
                 }
             }
             if (_right_sensor.onLine())
@@ -52,7 +52,7 @@ void DualLineFollower::run(int curr_time)
                 _dir_of_departure = BOTH_OFF_TOWARDS_LEFT;
                 if (!_speed_of_departure)
                 {
-                    _speed_of_departure = _time_since_departure / SENSOR_DISTANCE_MM;
+                    _speed_of_departure = SENSOR_DISTANCE_MM / _time_since_departure;
                 }
             }
         }
