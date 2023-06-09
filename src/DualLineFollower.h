@@ -31,7 +31,7 @@ class DualLineFollower
         const double SENSOR_DISTANCE_MM;
         unsigned long READ_FREQUENCY_MS;
         unsigned long _prev_read_time;
-        int _time_since_departure;
+        unsigned long _time_since_departure;
         int _dir_of_departure;
         double _speed_of_departure;
 };

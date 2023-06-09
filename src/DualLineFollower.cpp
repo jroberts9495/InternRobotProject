@@ -20,7 +20,7 @@ void DualLineFollower::run()
 
 void DualLineFollower::run(const unsigned long &curr_time)
 {
-    if (curr_time - _prev_read_time > READ_FREQUENCY_MS)
+    if (curr_time - _prev_read_time >= READ_FREQUENCY_MS)
     {
         if (onLine())
         {
@@ -40,7 +40,7 @@ void DualLineFollower::run(const unsigned long &curr_time)
                 _dir_of_departure = BOTH_OFF_TOWARDS_RIGHT;
                 if (!_speed_of_departure)
                 {
-                    _speed_of_departure = SENSOR_DISTANCE_MM / _time_since_departure;
+                    _speed_of_departure = (SENSOR_DISTANCE_MM) / (_time_since_departure / 1000.0);
                 }
             }
             if (_right_sensor.onLine())
@@ -52,10 +52,11 @@ void DualLineFollower::run(const unsigned long &curr_time)
                 _dir_of_departure = BOTH_OFF_TOWARDS_LEFT;
                 if (!_speed_of_departure)
                 {
-                    _speed_of_departure = SENSOR_DISTANCE_MM / _time_since_departure;
+                    _speed_of_departure = (SENSOR_DISTANCE_MM) / (_time_since_departure / 1000.0);
                 }
             }
         }
+    _prev_read_time = curr_time;
     }
 }
 

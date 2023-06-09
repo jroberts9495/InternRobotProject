@@ -18,7 +18,7 @@ const int MOTOR_ACTION_FREQUENCY(2000);
 const int WHEEL_WIDTH(20);
 const int WHEEL_DEPTH(30);
 const int MAX_ACCELERATION_NO_SLIP_255_MS_MS(2.5);
-const int MOTOR_SPEED(100);
+const int MOTOR_SPEED(255);
 
 const double LINE_TRACKER_WIDTH(4.5);
 
@@ -34,6 +34,7 @@ enum MotorState
 };
 
 // LOCAL VARIABLES
+DepartureDirection prev_departure = -1;
 MotorState ms = STOPPED;
 int timeof_last_motor_action(0);
 
@@ -59,7 +60,7 @@ MotorArray motorArray(
 
 void setup() {
   // Uncomment Serial.begin to use Serial.print.
-  // Serial.begin(9600);
+  //Serial.begin(9600);
   TCCR1A = _BV(WGM10);
   TCCR1B = _BV(CS11) | _BV(WGM12);
   TCCR2A = _BV(WGM21) | _BV(WGM20);
@@ -73,45 +74,49 @@ void setup() {
 void loop() {
   unsigned long loop_time = millis();
 
-  switch (line_tracker.direction_of_departure())
+  DepartureDirection cur_departure = line_tracker.direction_of_departure();
+  if (prev_departure != cur_departure)
   {
-    case ON_LINE:
-        motorArray.crawl(0, MOTOR_SPEED);
-        rgb_left.setColor(0, 55, 0);
-        rgb_right.setColor(0, 55, 0);
-        rgb_left.show();
-        rgb_right.show();
-        break;
-    case ONE_OFF_TOWARDS_LEFT:
-        motorArray.turn(MOTOR_SPEED, 25, false);
-        rgb_left.setColor(55, 55, 0);
-        rgb_right.setColor(55, 55, 0);
-        rgb_left.show();
-        rgb_right.show();
-        break;
-    case BOTH_OFF_TOWARDS_LEFT:
-        motorArray.turn(MOTOR_SPEED, 1.0/(line_tracker.speed_of_departure()), false);
-        rgb_left.setColor(55, 0, 0);
-        rgb_right.setColor(55, 0, 0);
-        rgb_left.show();
-        rgb_right.show();
-        break;
-    case ONE_OFF_TOWARDS_RIGHT:
-        motorArray.turn(MOTOR_SPEED, 25, true);
-        rgb_left.setColor(0, 55, 55);
-        rgb_right.setColor(0, 55, 55);
-        rgb_left.show();
-        rgb_right.show();
-        break;
-    case BOTH_OFF_TOWARDS_RIGHT:
-        motorArray.turn(MOTOR_SPEED, 1.0/(line_tracker.speed_of_departure()), true);
-        rgb_left.setColor(0, 0, 55);
-        rgb_right.setColor(0, 0, 55);
-        rgb_left.show();
-        rgb_right.show();
-        break;
+    switch (cur_departure)
+    {
+        case ON_LINE:
+            motorArray.crawl(0, MOTOR_SPEED);
+            rgb_left.setColor(0, 55, 0);
+            rgb_right.setColor(0, 55, 0);
+            rgb_left.show();
+            rgb_right.show();
+            break;
+        case ONE_OFF_TOWARDS_LEFT:
+            motorArray.turn(MOTOR_SPEED, 25, false);
+            rgb_left.setColor(55, 55, 0);
+            rgb_right.setColor(55, 55, 0);
+            rgb_left.show();
+            rgb_right.show();
+            break;
+        case BOTH_OFF_TOWARDS_LEFT:
+            motorArray.turn(MOTOR_SPEED, 1500.0/(line_tracker.speed_of_departure()), false);
+            rgb_left.setColor(55, 0, 0);
+            rgb_right.setColor(55, 0, 0);
+            rgb_left.show();
+            rgb_right.show();
+            break;
+        case ONE_OFF_TOWARDS_RIGHT:
+            motorArray.turn(MOTOR_SPEED, 25, true);
+            rgb_left.setColor(0, 55, 55);
+            rgb_right.setColor(0, 55, 55);
+            rgb_left.show();
+            rgb_right.show();
+            break;
+        case BOTH_OFF_TOWARDS_RIGHT:
+            motorArray.turn(MOTOR_SPEED, 1500.0/(line_tracker.speed_of_departure()), true);
+            rgb_left.setColor(0, 0, 55);
+            rgb_right.setColor(0, 0, 55);
+            rgb_left.show();
+            rgb_right.show();
+            break;
+    }
+  prev_departure = cur_departure;
   }
-
 /* Demo
   switch (ms)
   {

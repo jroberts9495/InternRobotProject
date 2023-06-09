@@ -4,7 +4,7 @@
 MotorArray::MotorArray(const int &fl_pin, const int &fr_pin, const int &bl_pin, const int &br_pin, const uint16_t &wheel_width_mm, const uint16_t &wheel_depth_mm, const double &max_accel_255pmsms):
     _wheel_depth_mm(wheel_depth_mm),
     _wheel_width_mm(wheel_width_mm),
-    _natural_radius((_wheel_depth_mm+_wheel_width_mm)/2),
+    _natural_radius((wheel_depth_mm+wheel_width_mm)/2),
     _max_accel_255pmsms(max_accel_255pmsms),
     ACCELERATION_FREQUENCY(5),
     _curr_fl_speed(0),
@@ -167,16 +167,10 @@ uint8_t MotorArray::turn(int16_t vy, const uint8_t &rad, bool left)
             0,
             log(_natural_radius),
             0,
-            -vy
-        );
-    } else if (rad > _natural_radius) {
-        map(
-            log(rad - _natural_radius),
-            0,
-            log(32767),
-            0,
             vy
         );
+    } else if (rad > _natural_radius) {
+        vy_offside = -vy  + (vy * _natural_radius / rad);
     }
     if (!left)
     {
